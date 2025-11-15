@@ -2,7 +2,7 @@
 import React from 'react';
 import { Status } from '../types';
 import { Loader } from './Loader';
-import { SoundWaveIcon, ClearIcon } from './Icons';
+import { SoundWaveIcon, ClearIcon, HelpIcon } from './Icons';
 
 interface ArticleInputProps {
   value: string;
@@ -12,6 +12,7 @@ interface ArticleInputProps {
   status: Status;
   selectedVoice: string;
   onVoiceChange: (voice: string) => void;
+  onOpenHelp: () => void;
 }
 
 const VOICES = [
@@ -23,7 +24,7 @@ const VOICES = [
 ];
 
 
-export const ArticleInput: React.FC<ArticleInputProps> = ({ value, onChange, onSubmit, onClear, status, selectedVoice, onVoiceChange }) => {
+export const ArticleInput: React.FC<ArticleInputProps> = ({ value, onChange, onSubmit, onClear, status, selectedVoice, onVoiceChange, onOpenHelp }) => {
   const isLoading = status === 'summarizing' || status === 'generating';
   
   const getButtonText = () => {
@@ -40,9 +41,18 @@ export const ArticleInput: React.FC<ArticleInputProps> = ({ value, onChange, onS
   return (
     <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 shadow-2xl border border-gray-700">
       <div className="flex justify-between items-center mb-2">
-        <label htmlFor="article-input" className="block text-lg font-medium text-gray-200">
-          Paste your news article here
-        </label>
+        <div className="flex items-center gap-2">
+          <label htmlFor="article-input" className="block text-lg font-medium text-gray-200">
+            Paste your news article here
+          </label>
+           <button 
+            onClick={onOpenHelp} 
+            className="text-gray-400 hover:text-cyan-400 transition-colors"
+            aria-label="How to use"
+          >
+            <HelpIcon className="w-5 h-5" />
+          </button>
+        </div>
          {value.length > 0 && !isLoading && (
           <button
             onClick={onClear}

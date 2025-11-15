@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { ArticleInput } from './components/ArticleInput';
 import { SummaryDisplay } from './components/SummaryDisplay';
 import { HistoryList } from './components/HistoryList';
+import { HelpModal } from './components/HelpModal';
 import { summarizeArticle, generateAudioSummary } from './services/geminiService';
 import { Status, HistoryItem } from './types';
 
@@ -24,6 +25,7 @@ function App() {
     }
   });
   const [autoPlay, setAutoPlay] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -106,6 +108,14 @@ function App() {
     setArticle('');
   }, []);
 
+  const handleOpenHelpModal = useCallback(() => {
+    setIsHelpModalOpen(true);
+  }, []);
+
+  const handleCloseHelpModal = useCallback(() => {
+    setIsHelpModalOpen(false);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-900 font-sans flex flex-col items-center p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-3xl mx-auto">
@@ -119,6 +129,7 @@ function App() {
             status={status}
             selectedVoice={selectedVoice}
             onVoiceChange={handleVoiceChange}
+            onOpenHelp={handleOpenHelpModal}
           />
           <SummaryDisplay
             summary={summary}
@@ -130,6 +141,7 @@ function App() {
           />
           <HistoryList items={history} onSelectItem={handleSelectHistoryItem} />
         </main>
+        <HelpModal isOpen={isHelpModalOpen} onClose={handleCloseHelpModal} />
       </div>
     </div>
   );
